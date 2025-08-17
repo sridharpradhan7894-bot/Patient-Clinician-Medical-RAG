@@ -69,9 +69,9 @@ This platform provides:
 - **Report Generation**: ReportLab, matplotlib
 
 ### Frontend
-- **Framework**: React 19 with modern hooks
+- **Framework**: React 18 with modern hooks
 - **UI Library**: shadcn/ui (Radix UI + Tailwind CSS)
-- **Routing**: React Router v7
+- **Routing**: React Router v6
 - **HTTP Client**: Axios
 - **Icons**: Lucide React
 - **Styling**: Tailwind CSS with custom healthcare theme
