@@ -1,0 +1,190 @@
+@@ .. @@
+ /* Responsive typography */
+ @media (max-width: 768px) {
+   .App {
+     font-size: 14px;
+   }
+   
+   h1 {
+-    font-size: 1.8rem;
++    font-size: 1.5rem;
+   }
+   
+   h2 {
+-    font-size: 1.5rem;
++    font-size: 1.25rem;
+   }
+   
+   h3 {
+-    font-size: 1.2rem;
++    font-size: 1.1rem;
+   }
++  
++  /* Mobile-specific adjustments */
++  .card-hover:hover {
++    transform: none; /* Disable hover effects on mobile */
++  }
++  
++  /* Touch-friendly buttons */
++  button {
++    min-height: 44px;
++    min-width: 44px;
++  }
++  
++  /* Better spacing on mobile */
++  .container {
++    padding-left: 1rem;
++    padding-right: 1rem;
++  }
++}
++
++@media (max-width: 480px) {
++  .App {
++    font-size: 13px;
++  }
++  
++  h1 {
++    font-size: 1.25rem;
++  }
++  
++  h2 {
++    font-size: 1.125rem;
++  }
++  
++  h3 {
++    font-size: 1rem;
++  }
++  
++  /* Extra small mobile adjustments */
++  .container {
++    padding-left: 0.75rem;
++    padding-right: 0.75rem;
++  }
++}
++
++/* Tablet responsive */
++@media (min-width: 768px) and (max-width: 1024px) {
++  .grid-responsive {
++    grid-template-columns: repeat(2, 1fr);
++  }
++}
++
++/* Large screen optimizations */
++@media (min-width: 1200px) {
++  .container-large {
++    max-width: 1200px;
++    margin: 0 auto;
++  }
++}
++
++/* Print styles for reports */
++@media print {
++  .no-print {
++    display: none !important;
++  }
++  
++  .print-break {
++    page-break-after: always;
++  }
++  
++  body {
++    font-size: 12pt;
++    line-height: 1.4;
++  }
++}
++
++/* High DPI displays */
++@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
++  .health-metric {
++    border-left-width: 3px;
++  }
++  
++  .clinician-panel {
++    border-left-width: 3px;
++  }
++}
++
++/* Landscape orientation on mobile */
++@media (max-width: 768px) and (orientation: landscape) {
++  .mobile-landscape-adjust {
++    height: 100vh;
++    overflow-y: auto;
++  }
++  
++  .header-mobile-landscape {
++    height: 3rem;
++  }
++}
++
++/* Focus indicators for better accessibility */
++.focus-visible {
++  outline: 2px solid var(--healthcare-primary);
++  outline-offset: 2px;
++}
++
++/* Loading states for mobile */
++.mobile-loading {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
++  min-height: 50vh;
++  padding: 2rem;
++}
++
++/* Mobile-specific animations */
++@media (max-width: 768px) {
++  .slide-in-mobile {
++    animation: slideInMobile 0.3s ease-out;
++  }
++  
++  @keyframes slideInMobile {
++    from {
++      transform: translateX(100%);
++      opacity: 0;
++    }
++    to {
++      transform: translateX(0);
++      opacity: 1;
++    }
++  }
++}
++
++/* Utility classes for responsive design */
++.text-responsive {
++  font-size: clamp(0.875rem, 2.5vw, 1rem);
++}
++
++.heading-responsive {
++  font-size: clamp(1.25rem, 4vw, 2rem);
++}
++
++.padding-responsive {
++  padding: clamp(1rem, 3vw, 2rem);
++}
++
++.gap-responsive {
++  gap: clamp(0.5rem, 2vw, 1.5rem);
++}
++
++/* Line clamping for text truncation */
++.line-clamp-1 {
++  display: -webkit-box;
++  -webkit-line-clamp: 1;
++  -webkit-box-orient: vertical;
++  overflow: hidden;
++}
++
++.line-clamp-2 {
++  display: -webkit-box;
++  -webkit-line-clamp: 2;
++  -webkit-box-orient: vertical;
++  overflow: hidden;
++}
++
++.line-clamp-3 {
++  display: -webkit-box;
++  -webkit-line-clamp: 3;
++  -webkit-box-orient: vertical;
++  overflow: hidden;
+ }
