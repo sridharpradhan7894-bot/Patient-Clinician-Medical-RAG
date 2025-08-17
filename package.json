@@ -1,0 +1,15 @@
+{
+  "name": "healthsync-medical-platform",
+  "version": "1.0.0",
+  "description": "Patient-Clinician Medical RAG Platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd frontend && npm start",
+    "backend": "cd backend && python server.py",
+    "install-all": "cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "start": "cd frontend && npm start"
+  },
+  "keywords": ["medical", "rag", "healthcare", "ai"],
+  "author": "HealthSync Team",
+  "license": "MIT"
+}
