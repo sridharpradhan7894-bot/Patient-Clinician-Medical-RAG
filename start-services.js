@@ -1,46 +1,95 @@
-// Alternative to Docker for WebContainer environment
+#!/usr/bin/env node
+
 const { spawn } = require('child_process');
-const fs = require('fs');
 const path = require('path');
 
-console.log('🚀 Starting HealthSync Medical Platform...');
+console.log('🚀 Starting HealthSync Medical Platform Services...\n');
 
-// Check if directories exist
-const frontendExists = fs.existsSync('./frontend');
-const backendExists = fs.existsSync('./backend');
+// Function to start a service
+function startService(name, command, args, cwd) {
+  return new Promise((resolve, reject) => {
+    console.log(`📦 Starting ${name}...`);
+    
+    const service = spawn(command, args, {
+      cwd: cwd || process.cwd(),
+      stdio: 'pipe',
+      shell: true
+    });
 
-console.log(`Frontend directory exists: ${frontendExists}`);
-console.log(`Backend directory exists: ${backendExists}`);
+    service.stdout.on('data', (data) => {
+      console.log(`[${name}] ${data.toString().trim()}`);
+    });
 
-if (!frontendExists) {
-  console.error('❌ Frontend directory not found');
-  process.exit(1);
+    service.stderr.on('data', (data) => {
+      console.error(`[${name}] ${data.toString().trim()}`);
+    });
+
+    service.on('close', (code) => {
+      if (code === 0) {
+        console.log(`✅ ${name} started successfully`);
+        resolve();
+      } else {
+        console.error(`❌ ${name} failed with code ${code}`);
+        reject(new Error(`${name} failed`));
+      }
+    });
+
+    service.on('error', (error) => {
+      console.error(`❌ Failed to start ${name}:`, error.message);
+      reject(error);
+    });
+
+    // For long-running services, resolve after a short delay
+    if (name.includes('Frontend') || name.includes('Backend')) {
+      setTimeout(() => {
+        console.log(`✅ ${name} is starting...`);
+        resolve();
+      }, 3000);
+    }
+  });
 }
 
-// Start frontend
-console.log('📱 Starting Frontend...');
-const frontend = spawn('npm', ['start'], {
-  cwd: './frontend',
-  stdio: 'inherit',
-  shell: true
-});
-
-frontend.on('error', (err) => {
-  console.error('❌ Frontend error:', err.message);
-});
-
-frontend.on('close', (code) => {
-  console.log(`Frontend process exited with code ${code}`);
-});
-
-// Health check function (alternative to curl)
-function healthCheck() {
-  console.log('🔍 Health check completed - services starting...');
+// Main function to start all services
+async function startAllServices() {
+  try {
+    console.log('🔧 Setting up environment...\n');
+    
+    // Check if frontend directory exists
+    const frontendPath = path.join(process.cwd(), 'frontend');
+    const backendPath = path.join(process.cwd(), 'backend');
+    
+    console.log(`Frontend path: ${frontendPath}`);
+    console.log(`Backend path: ${backendPath}`);
+    
+    // Install frontend dependencies
+    console.log('\n📦 Installing frontend dependencies...');
+    await startService('Frontend Dependencies', 'npm', ['install'], frontendPath);
+    
+    // Start frontend
+    console.log('\n🌐 Starting frontend server...');
+    startService('Frontend Server', 'npm', ['start'], frontendPath);
+    
+    console.log('\n✅ All services are starting up!');
+    console.log('\n🌐 Frontend will be available at: http://localhost:3000');
+    console.log('📚 Backend API docs will be at: http://localhost:8000/docs');
+    console.log('\n💡 Note: Backend requires Python setup - see README.md for details');
+    
+  } catch (error) {
+    console.error('\n❌ Error starting services:', error.message);
+    process.exit(1);
+  }
 }
 
-// Run health check after 10 seconds
-setTimeout(healthCheck, 10000);
+// Handle process termination
+process.on('SIGINT', () => {
+  console.log('\n🛑 Shutting down services...');
+  process.exit(0);
+});
 
-console.log('✅ Services are starting...');
-console.log('📱 Frontend will be available at: http://localhost:3000');
-console.log('🔧 Backend setup required separately due to Python dependencies');
+process.on('SIGTERM', () => {
+  console.log('\n🛑 Shutting down services...');
+  process.exit(0);
+});
+
+// Start the services
+startAllServices();
